@@ -1,4 +1,4 @@
-# from kugou import Kugou
+from kugou import Kugou
 from netease import Netease
 # from qqmusic import Qmusic
 # from baidumusic import Bmusic
@@ -27,6 +27,7 @@ class Player():
         self.music_name = []
         self.music_album = []
         self.music_id = []
+        self.music_hash = []
 
     def askUse(self):
         try:
@@ -84,6 +85,8 @@ class Player():
             else:
                 print('你输入的啥玩意')
             self.askContinue(how)
+        elif how == "kugou":
+            pass
 
     def showMusic(self, songs, use_way):
         if use_way == "netease":
@@ -121,8 +124,26 @@ class Player():
             netease_pt.add_column('专辑', self.music_album)
             print(netease_pt)
             netease_pt = None
-        elif use_way == "qqmusic":
-            pass
+        elif use_way == "kugou":
+            for song in songs:
+                self.music_singer.append(song["SingerName"])
+                if song["AlbumName"] == "":
+                    self.music_album.append('暂无专辑')
+                else:
+                    self.music_album.append(song["AlbumName"])
+                self.music_name.append(song["FileName"])
+                if song["AlbumID"] == "":
+                    self.music_id.append('暂无ID')
+                else:
+                    self.music_id.append(song["AlbumID"])
+                self.music_hash.append(song["FileHash"])
+            kugou_pt = pt.PrettyTable()
+            kugou_pt.add_column('编号', [i + 1 for i in range(len(self.music_id))])
+            kugou_pt.add_column('ID', self.music_id)
+            kugou_pt.add_column('歌曲', self.music_name)
+            kugou_pt.add_column('歌手', self.music_singer)
+            kugou_pt.add_column('专辑', self.music_album)
+            print(kugou_pt)
 
     def requestsHeaders(self):
         ua =  [
@@ -147,7 +168,10 @@ class Player():
             pass
 
         elif search_way == "3":
-            pass
+            kugou_music = Kugou()
+            kugou_songs = kugou_music.searchMusic({'User-agent':self.requestsHeaders()}, search_song)
+            self.showMusic(kugou_songs, 'kugou')
+            self.askContinue('kugou')
 
         elif search_way == "4":
             pass
