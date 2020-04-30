@@ -73,16 +73,16 @@ class Netease:
         song_name = []
         song_zj = []
         song_dict = json.loads(response.text)
-        for song in song_dict['result']['songs']:
-            print(song)
-            song_name.append(song['name'])
-            song_id.append(song['id'])
-            song_ar = song['ar']
-            if len(song_ar) == 2:
-                song_writer.append(song_ar[0]['name'] + '_' + song_ar[1]['name'])
-            else:
-                song_writer.append(song_ar[0]['name'])
-            song_zj.append(song['al']['name'])
+        # for song in song_dict['result']['songs']:
+        #     print(song)
+        #     song_name.append(song['name'])
+        #     song_id.append(song['id'])
+        #     song_ar = song['ar']
+        #     if len(song_ar) == 2:
+        #         song_writer.append(song_ar[0]['name'] + '_' + song_ar[1]['name'])
+        #     else:
+        #         song_writer.append(song_ar[0]['name'])
+        #     song_zj.append(song['al']['name'])
         return song_dict['result']['songs']
 if __name__ == '__main__':
     search_song = input("请输入搜索音乐的名称:")
